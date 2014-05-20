@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Android-Https-SelfSigned</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="basic_text">Press the button to perform an HTTPS request to the custom URL inserted in the code.</string>
+    <string name="basic_button">Send HTTPS req</string>
+
+</resources>

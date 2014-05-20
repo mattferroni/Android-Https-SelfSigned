@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/Android-Https-SelfSigned.iml" filepath="$PROJECT_DIR$/Android-Https-SelfSigned.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Android-Https-SelfSigned/Android-Https-SelfSigned-Android-Https-SelfSigned.iml" filepath="$PROJECT_DIR$/Android-Https-SelfSigned/Android-Https-SelfSigned-Android-Https-SelfSigned.iml" />
+    </modules>
+  </component>
+</project>
+
