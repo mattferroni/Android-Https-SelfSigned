@@ -30,7 +30,7 @@ import javax.net.ssl.TrustManager;
 public class DataRetrievingTask extends AsyncTask<String, Void, Boolean>{
 
     private final String TAG = "DataRetrievingTask";
-    private final String YOUR_HTTPS_URL = "http://ferroni.me";
+    private final String YOUR_HTTPS_URL = "https://ferroni.me";
 
     public DataRetrievingTask(Context context){
         super();
@@ -84,6 +84,6 @@ public class DataRetrievingTask extends AsyncTask<String, Void, Boolean>{
     protected void onPostExecute(Boolean result) {
         Log.d(TAG, "onPostExecute launched");
     }
-
+    
 }
 
