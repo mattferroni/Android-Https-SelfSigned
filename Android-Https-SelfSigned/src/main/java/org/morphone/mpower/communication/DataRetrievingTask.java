@@ -30,6 +30,7 @@ import javax.net.ssl.TrustManager;
 public class DataRetrievingTask extends AsyncTask<String, Void, Boolean>{
 
     private final String TAG = "DataRetrievingTask";
+    private final String YOUR_HTTPS_URL = "http://ferroni.me";
 
     public DataRetrievingTask(Context context){
         super();
@@ -37,13 +38,10 @@ public class DataRetrievingTask extends AsyncTask<String, Void, Boolean>{
 
     @Override
     protected Boolean doInBackground(String... par) {
-        Log.d(TAG, "doInBackground");
+        Log.d(TAG, "doInBackground launched");
         Boolean result = false;
-
         URL url = null;
         try {
-            byte[] secret = null;
-
             TrustManager tm[] = { new PubKeyManager() };
             assert (null != tm);
 
@@ -51,7 +49,7 @@ public class DataRetrievingTask extends AsyncTask<String, Void, Boolean>{
             assert (null != context);
             context.init(null, tm, null);
 
-            url = new URL("https://personal01.ferroni.me");
+            url = new URL(YOUR_HTTPS_URL);
             assert (null != url);
 
             HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
@@ -70,13 +68,13 @@ public class DataRetrievingTask extends AsyncTask<String, Void, Boolean>{
 
             Log.d(TAG, total.toString());
         } catch (MalformedURLException e) {
-            e.printStackTrace();
+            Log.e(TAG, "MalformedURLException exception while checking trusted server");
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.e(TAG, "IOException exception while checking trusted server");
         } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
+            Log.e(TAG, "NoSuchAlgorithmException exception while checking trusted server");
         } catch (KeyManagementException e) {
-            e.printStackTrace();
+            Log.e(TAG, "KeyManagementException exception while checking trusted server");
         }
         return result;
     }
@@ -84,7 +82,7 @@ public class DataRetrievingTask extends AsyncTask<String, Void, Boolean>{
 
     @Override
     protected void onPostExecute(Boolean result) {
-        Log.d(TAG, "onPostExecute");
+        Log.d(TAG, "onPostExecute launched");
     }
 
 }
