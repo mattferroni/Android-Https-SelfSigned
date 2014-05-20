@@ -42,12 +42,6 @@ public class DataRetrievingTask extends AsyncTask<String, Void, Boolean>{
 
         URL url = null;
         try {
-            /**
-             * Exception now: self-signed certificate!
-             *
-             * http://developer.android.com/training/articles/security-ssl.html#SelfSigned
-             * https://www.owasp.org/index.php/Certificate_and_Public_Key_Pinning#Android
-             */
             byte[] secret = null;
 
             TrustManager tm[] = { new PubKeyManager() };

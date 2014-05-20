@@ -23,42 +23,47 @@ import javax.net.ssl.TrustManagerFactory;
 import javax.net.ssl.X509TrustManager;
 
 /**
- * Created by matt on 19/05/14.
+ * This class is meant to provide authentication for a
+ * self-signed certificate used server-side, whose public
+ * key is stored in the assets folder.
+ *
+ * Created by Matteo Ferroni on 19/05/14.
  */
 public final class PubKeyManager implements X509TrustManager {
 
     private final String TAG = "PubKeyManager";
-    private X509Certificate[] trustedCerts = new X509Certificate[1];
+    private X509Certificate[] trustedCerts = null;
 
     public PubKeyManager(){
+        super();
         InputStream serverCertStream = null;
         try{
+            // Get pub key on creation
             serverCertStream = Application.getInstance().getAssets().open("server.cert");
             CertificateFactory cf = CertificateFactory.getInstance("X.509");
             X509Certificate cert = (X509Certificate) cf.generateCertificate(serverCertStream);
+
+            // Note: use just a single certificate
+            trustedCerts = new X509Certificate[1];
             trustedCerts[0] = cert;
         } catch (FileNotFoundException e) {
-            Log.e(TAG, "Certificate not found");
-            e.printStackTrace();
+            Log.e(TAG, "Public key not found on the device");
         } catch (IOException e) {
-            Log.e(TAG, "I/O exception");
-            e.printStackTrace();
+            Log.e(TAG, "I/O exception while opening the public key");
+
         } catch (CertificateException e) {
-            Log.e(TAG, "Certificate exception");
-            e.printStackTrace();
+            Log.e(TAG, "Generic certificate exception");
         } finally {
             try {
                 serverCertStream.close();
             } catch (Exception e) {
-                Log.e(TAG, "Cannot close the certificate file");
+                Log.e(TAG, "Exception while closing the public key file");
             }
         }
     }
 
     @Override
-    public X509Certificate[] getAcceptedIssuers() {
-        return trustedCerts;
-    }
+    public X509Certificate[] getAcceptedIssuers() { return trustedCerts; }
 
     @Override
     public void checkClientTrusted(X509Certificate[] certs, String authType) {
@@ -67,19 +72,25 @@ public final class PubKeyManager implements X509TrustManager {
 
     @Override
     public void checkServerTrusted(X509Certificate[] chain, String authType) throws CertificateException {
-        boolean match = false;
+
+        // Assert chain validity
+        assert(chain != null);
+        assert(chain.length > 0);
+
+        boolean certificatesMatch = false;
         try{
-            for(X509Certificate c : chain){
-                if(c.equals(trustedCerts[0])){
-                    match = true;
+            for(X509Certificate receivedCert : chain){
+                if(receivedCert.equals(trustedCerts[0])){
+                    // Note: use just a single certificate
+                    certificatesMatch = true;
+                    break;
                 }
             }
         }catch (Exception e){
-            Log.e(TAG, "Generic exception while checking server trusted");
-            e.printStackTrace();
+            Log.e(TAG, "Generic exception while checking trusted server");
         }
 
-        if(!match)
+        if(!certificatesMatch)
             throw new CertificateException("Certificate doesn't match");
     }
 
